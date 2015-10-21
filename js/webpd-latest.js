@@ -327,6 +327,11 @@ var Pd = module.exports = {
     if (pdGlob.isStarted) patch.start()
     return patch
   },
+  //btedit
+  getPatchData: function(patchData) {
+    if (_.isString(patchData)) patchData = pdfu.parse(patchData)
+    return patchData
+  },
 
   _createPatch: function() {
     var patch = new Patch()

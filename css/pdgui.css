@@ -1,26 +1,62 @@
 body {
 	padding:0px;
 	margin:0px;
-	background-color:#eee;
+	background-color:#fff;
 	list-style:none;
 }
 
+canvas, input {
+	border-radius:0px !important;
+	-webkit-border-radius:0px !important;
+	-moz-border-radius:0px !important;
+}
+
+
+/* canvas */
+
+#objects, #connections {
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:1000px;
+	height:1000px;
+}
+
+#connections {
+	z-index:1;
+}
+
+#objects {
+	z-index:2;
+}
+
+
+
+/* objects */
+
 .pdobject {
-	min-width:100px;
-	min-height:20px;
-	border:solid 1px black;
+	min-width:10px;
+	min-height:10px;
+	border:solid 1px #777;
 	display:inline-block;
 	position:absolute;
 	box-sizing:border-box;
 	overflow:hidden;
-	background-color:white;
+	background-color:#f7f7f7;
+}
+
+.objecttext {
+	font-size:8pt;
+	font-family:courier;
+	padding:2px 2px;
 }
 
 .inlet, .outlet {
 	top:0px;
-	width:10px;
-	height:4px;
+	width:7px;
+	height:2px;
 	background-color:#000;
+	/* border:solid 1px black; */
 	float:right;
 	position:relative;
 	display:block;
@@ -35,8 +71,13 @@ body {
 	background-color:#1bd;
 }
 
-.inlets, .outlets {display:table; width:100%; position:absolute; top:0px; left:0px;}
-.outlets {bottom:0px; top:auto;}
+.inlets {display:table; width:102%; position:absolute; top:0px; left:0px;}
+.outlets {display:table; width:102%; position:absolute; bottom:0px; left:0px;}
 .inlets ul, .outlets ul {display:table-row; width: 100%}
 .inlets li.left, .outlets li.left {display: table-cell; text-align: left; width: 1px; white-space:nowrap;}
 .inlets li, .outlets li  {display: table-cell; text-align: right; width: auto;}
+
+ul {
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+}
