@@ -1,0 +1,42 @@
+body {
+	padding:0px;
+	margin:0px;
+	background-color:#eee;
+	list-style:none;
+}
+
+.pdobject {
+	min-width:100px;
+	min-height:20px;
+	border:solid 1px black;
+	display:inline-block;
+	position:absolute;
+	box-sizing:border-box;
+	overflow:hidden;
+	background-color:white;
+}
+
+.inlet, .outlet {
+	top:0px;
+	width:10px;
+	height:4px;
+	background-color:#000;
+	float:right;
+	position:relative;
+	display:block;
+	cursor:pointer;
+}
+.outlet {
+	bottom:0px;
+	top:auto;
+}
+
+.inlet:hover, .outlet:hover {
+	background-color:#1bd;
+}
+
+.inlets, .outlets {display:table; width:100%; position:absolute; top:0px; left:0px;}
+.outlets {bottom:0px; top:auto;}
+.inlets ul, .outlets ul {display:table-row; width: 100%}
+.inlets li.left, .outlets li.left {display: table-cell; text-align: left; width: 1px; white-space:nowrap;}
+.inlets li, .outlets li  {display: table-cell; text-align: right; width: auto;}
