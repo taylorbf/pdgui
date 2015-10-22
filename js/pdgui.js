@@ -79,6 +79,7 @@ var PdObject = function(node) {
 		GUI.container.objects.appendChild(this.house)
 
 		switch (this.text) {
+			case "floatatom":
 			case "nbx":
 				var nexuswidget = this.createNX("number",40,15)
 				nexuswidget.on('*',function(data) {
