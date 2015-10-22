@@ -14,16 +14,40 @@ var GUI = {
 	objects: [],
 	connections: [],
 	loadPatch: function(patchData) {
+		this.patchData = patchData
 		this.init()
-		console.log(patchData.nodes)
-		for (var i=0;i<patchData.nodes.length;i++) {
-			var node = patchData.nodes[i]
-			var newobj = new PdObject({x: node.layout.x, y: node.layout.y, text: node.proto, index: i })
+		for (var i=0;i<this.patchData.nodes.length;i++) {
+			var node = this.patchData.nodes[i]
+			var newobj = new PdObject(node)
 			GUI.objects.push(newobj)
 		}
+		this.createConnections();
 	},
-	startConnection: function(x,y) {
-		//GUI.ctx.
+	createConnections: function(x,y) {
+		for (var i=0;i<this.patchData.connections.length;i++) {
+			console.log(i)
+			var connection = this.patchData.connections[i]
+			var inlet1 = GUI.objects[connection.sink.id].inlets[connection.sink.port]
+			inlet1 = GUI.utils.findPosition(inlet1)
+			var outlet1 = GUI.objects[connection.source.id].outlets[connection.source.port]
+			outlet1 = GUI.utils.findPosition(outlet1)
+			this.connections.push([{x:inlet1.left+2,y:inlet1.top-18},{x:outlet1.left+2,y:outlet1.top-18}])
+		}
+		this.drawConnections()
+	},
+	drawConnections: function() {
+		this.ctx.clearRect(0,0,1000,1000)
+		for (var i=0;i<this.connections.length;i++) {
+			var connection = this.connections[i]
+			with (this.ctx) {
+				lineWidth = 1
+				beginPath()
+				moveTo(connection[0].x,connection[0].y)
+				lineTo(connection[1].x,connection[1].y)
+				stroke()
+				closePath()
+			}
+		}
 	},
 	update: function() {
 		if (GUI.changing) {
@@ -40,42 +64,59 @@ var GUI = {
 		this.container.connections.height = 1000 
 		this.ctx = GUI.container.connections.getContext("2d")
 
+		this.dummy = {patch: patch}
+
 		//var testobject = new PdObject({x: 200,y: 100})
 		//var testobject2 = new PdObject({x: 250,y: 300})
 
-		this.updateevent = document.addEventListener("mousemove",GUI.update);
+		//this.updateevent = document.addEventListener("mousemove",GUI.update);
 
 	}
 }
 
-var PdObject = function(param) {
+var PdObject = function(node) {
 
-	this.x = param.x || false;
-	this.y = param.y || false;
-	this.text = param.text || false;
-	this.index = param.index || false;
+	//{x: node.layout.x, y: node.layout.y, text: node.proto, index: i }
+
+	this.x = node.layout.x || false;
+	this.y = node.layout.y || false;
+	this.text = node.proto || false;
+	this.index = node.id || false;
+	this.args = node.args || false;
 
 	this.create = function() {
 		this.house = document.createElement("div")
 		this.house.className = "pdobject"
-		this.house.style.left = param.x+"px"
-		this.house.style.top = param.y+"px"
-		this.createInlets(1)
-		this.createOutlets(1)
+		this.house.style.left = this.x+"px"
+		this.house.style.top = this.y+"px"
+		this.createInlets(2)
+		this.createOutlets(2)
 		GUI.container.objects.appendChild(this.house)
 
 		switch (this.text) {
 			case "nbx":
-				this.createNX("number",40,15)
-				this.widget.on('*',function(data) {
+				var nexuswidget = this.createNX("number",40,15)
+				nexuswidget.on('*',function(data) {
 					patch.objects[this.index].i(0).message([data.value])
 				}.bind(this))
+				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
+				receiver.message = function(args) {
+				    console.log(args)
+				    nexuswidget.set({value:args[0]},false)
+				}
+				patch.objects[this.index].o(0).connect(receiver)
 				break;
 			case "tgl":
-				this.createNX("toggle",15,15)
-				this.widget.on('*',function(data) {
+				var nexuswidget = this.createNX("toggle",15,15)
+				nexuswidget.on('*',function(data) {
 					patch.objects[this.index].i(0).message(['bang'])
 				}.bind(this))
+				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
+				receiver.message = function(args) {
+				    console.log(args)
+				    nexuswidget.set({value:args[0]},false)
+				}
+				patch.objects[this.index].o(0).connect(receiver) 
 				break;
 			default: 
 				this.createText(this.text)
@@ -83,18 +124,6 @@ var PdObject = function(param) {
 		}
 	/*	$([this.house]).draggable({
 			drag: function(e) {
-				with (GUI.ctx) {
-					lineWidth = 2
-					clearRect(0,0,1000,1000)
-					beginPath()
-					moveTo(0,0)
-					lineTo(e.clientX,e.clientY)
-					stroke()
-					closePath()
-				}
-				//console.log(e)
-       // updateCounterStatus( $drag_counter, counts[ 1 ] );
-
       }
     }) */
 	}
@@ -102,11 +131,12 @@ var PdObject = function(param) {
 	this.createText = function(text) {
 		var textcont = document.createElement("div")
 		textcont.className = "objecttext"
-		textcont.innerHTML = text
+		textcont.innerHTML = text + " " + this.args.join(' ')
 		this.house.appendChild(textcont)
 	}
 
 	this.createInlets = function(number) {
+		this.inlets = []
 		var inletcontainer = document.createElement("div")
 		inletcontainer.className = "inlets"
 		var inletrow = document.createElement("ul")
@@ -118,12 +148,12 @@ var PdObject = function(param) {
 			var inlet = document.createElement("div")
 			inlet.className = "inlet"
 
-			inlet.addEventListener("mousedown",function(inlet) {
-				console.log("eh...")
+			/*inlet.addEventListener("mousedown",function(inlet) {
 				var pos = GUI.utils.findPosition(inlet)
 				GUI.startConnection(pos.left,pos.top)
-			}.bind(this,inlet))
+			}.bind(this,inlet)) */
 
+			this.inlets.push(inlet)
 			inletcol.appendChild(inlet)
 			inletrow.appendChild(inletcol)
 		}
@@ -138,6 +168,7 @@ var PdObject = function(param) {
 
 
 	this.createOutlets = function(number) {
+		this.outlets = []
 		var outletcontainer = document.createElement("div")
 		outletcontainer.className = "outlets"
 		var outletrow = document.createElement("ul")
@@ -148,6 +179,7 @@ var PdObject = function(param) {
 			}
 			var outlet = document.createElement("div")
 			outlet.className = "outlet"
+			this.outlets.push(outlet)
 			outletcol.appendChild(outlet)
 			outletrow.appendChild(outletcol)
 		}
@@ -160,11 +192,12 @@ var PdObject = function(param) {
 	}
 
 	this.createNX = function(type,w,h) {
-		this.widget = nx.add(type, {
+		var nexuswidget = nx.add(type, {
 			parent: this.house,
 			w: w || false,
 			h: h || false
 		})
+		return nexuswidget
 	}
 
 	this.create()

@@ -13,7 +13,7 @@
 		<script>
 
 
-		var patch, patchData, gui;
+		var patch, patchData;
 		$(function() {
 
       $.get('pd/simple.pd', function(mainStr) {
@@ -21,10 +21,11 @@
         patchData = Pd.getPatchData(mainStr)
 
         patch = Pd.loadPatch(patchData)
-        gui = GUI.loadPatch(patchData)
+       
+        GUI.loadPatch(patchData)
         
         Pd.start()
-
+/*
         var dummyObject = {patch: patch}
 				    , receiver = new Pd.core.portlets.Inlet(dummyObject)
 
@@ -34,7 +35,7 @@
 				    toggle3.set({value:args[0]},false)
 				}
 
-				patch.objects[9].o(0).connect(receiver)
+				patch.objects[9].o(0).connect(receiver) */
 
         //patch.objects[0].i(0).message([100])
 
@@ -43,6 +44,7 @@
 
 		</script>
 
+		<div id="title">A WebPD Interface</div>
 		<div id="objects"></div>
 		<canvas id="connections"></canvas>
 

@@ -3,6 +3,9 @@ body {
 	margin:0px;
 	background-color:#fff;
 	list-style:none;
+	user-select:none !important;
+	-webkit-user-select:none !important;
+	-moz-user-select:none !important;
 }
 
 canvas, input {
@@ -11,12 +14,32 @@ canvas, input {
 	-moz-border-radius:0px !important;
 }
 
+/* title */
+/*
+#title {
+	background-color:#f7f7f7;
+	font-family:courier;
+	color:#000;
+	border-bottom:solid 1px #000;
+	padding:4px;
+	font-size:12px;
+}*/
+
+#title {
+	background-color:#1bd;
+	font-family:courier;
+	letter-spacing:0.1em;
+	font-weight:bold;
+	color:#fff;
+	padding:4px 10px;
+	font-size:12px;
+}
 
 /* canvas */
 
 #objects, #connections {
 	position:absolute;
-	top:0px;
+	top:20px;
 	left:0px;
 	width:1000px;
 	height:1000px;
