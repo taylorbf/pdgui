@@ -5,7 +5,7 @@ $(function() {
 })
 
 nx.onload = function() {
-	nx.colorize("accent","#1bd")
+	nx.colorize("accent","#000")
 	nx.colorize("fill","#f7f7f7")
 }
 
@@ -40,7 +40,7 @@ var GUI = {
 		for (var i=0;i<this.connections.length;i++) {
 			var connection = this.connections[i]
 			with (this.ctx) {
-				lineWidth = 1
+				lineWidth = 1.5
 				beginPath()
 				moveTo(connection[0].x,connection[0].y)
 				lineTo(connection[1].x,connection[1].y)
@@ -78,10 +78,10 @@ var PdObject = function(node) {
 
 	//{x: node.layout.x, y: node.layout.y, text: node.proto, index: i }
 
-	this.x = node.layout.x || false;
-	this.y = node.layout.y || false;
-	this.text = node.proto || false;
-	this.index = node.id || false;
+	this.x = node.layout.x
+	this.y = node.layout.y
+	this.text = node.proto
+	this.index = node.id;
 	this.args = node.args || false;
 
 	this.create = function() {
@@ -89,8 +89,13 @@ var PdObject = function(node) {
 		this.house.className = "pdobject"
 		this.house.style.left = this.x+"px"
 		this.house.style.top = this.y+"px"
-		this.createInlets(2)
-		this.createOutlets(2)
+		console.log(patch.objects[this.index])
+		if (patch.objects[this.index]) {
+			this.createInlets(patch.objects[this.index].inlets.length)
+			this.createOutlets(patch.objects[this.index].outlets.length)
+		} else {
+			console.log(this.index)
+		}
 		GUI.container.objects.appendChild(this.house)
 
 		switch (this.text) {
@@ -101,7 +106,6 @@ var PdObject = function(node) {
 				}.bind(this))
 				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
 				receiver.message = function(args) {
-				    console.log(args)
 				    nexuswidget.set({value:args[0]},false)
 				}
 				patch.objects[this.index].o(0).connect(receiver)
@@ -113,10 +117,62 @@ var PdObject = function(node) {
 				}.bind(this))
 				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
 				receiver.message = function(args) {
-				    console.log(args)
 				    nexuswidget.set({value:args[0]},false)
 				}
 				patch.objects[this.index].o(0).connect(receiver) 
+				break;
+			case "hsl":
+				var nexuswidget = this.createNX("slider",100,12)
+				nexuswidget.on('*',function(data) {
+					patch.objects[this.index].i(0).message([data.value])
+				}.bind(this))
+				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
+				receiver.message = function(args) {
+				    nexuswidget.set({value:args[0]},false)
+				}
+				patch.objects[this.index].o(0).connect(receiver) 
+				break;
+			case "vsl":
+				var nexuswidget = this.createNX("slider",12,100)
+				nexuswidget.on('*',function(data) {
+					patch.objects[this.index].i(0).message([data.value])
+				}.bind(this))
+				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
+				receiver.message = function(args) {
+				    nexuswidget.set({value:args[0]},false)
+				}
+				patch.objects[this.index].o(0).connect(receiver) 
+				break;
+			case "bng":
+				var nexuswidget = this.createNX("button",15,15)
+				nexuswidget.mode = "impulse"
+				nexuswidget.on('*',function(data) {
+					patch.objects[this.index].i(0).message(['bang'])
+				}.bind(this))
+				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
+				receiver.message = function(args) {
+					nexuswidget.set({press:1},false)
+					setTimeout(nexuswidget.set.bind(nexuswidget,{press:0},false),40)
+				}
+				patch.objects[this.index].o(0).connect(receiver) 
+				break;
+			case "msg":
+				var nexuswidget = this.createNX("message",100,15)
+				nexuswidget.size = 11
+				nexuswidget.val.value = patchData.nodes[this.index].args.join(" ")
+				nexuswidget.draw()
+				nexuswidget.on('*',function(data) {
+					patch.objects[this.index].i(0).message([data.value])
+				}.bind(this))
+				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
+				receiver.message = function(args) {
+				}
+				patch.objects[this.index].o(0).connect(receiver) 
+				break;
+			case "text":
+				this.createText(this.text)
+				this.house.style.backgroundColor="#fff"
+				this.house.style.border="solid 0px"
 				break;
 			default: 
 				this.createText(this.text)

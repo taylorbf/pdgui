@@ -1,21 +1,36 @@
-#N canvas 214 98 450 300 10;
+#N canvas 144 108 907 368 10;
 #X obj 102 55 osc~ 200;
 #X obj 96 130 dac~;
-#X obj 48 96 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+#X obj 48 96 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
 ;
 #X obj 102 13 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 24 256;
+-262144 -1 -1 0 256;
 #X obj 21 36 loadbang;
 #X obj 214 22 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 195 126 * 300;
 #X obj 178 187 osc~ 200;
 #X obj 195 159 + 100;
-#X obj 193 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 193 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 209 59 metro 300;
 #X obj 260 20 nbx 10 24 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 8 256;
+-262144 -1 -1 0 256;
+#X obj 554 92 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 4800 1;
+#X obj 371 187 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 227 265 this is a sizable test comment;
+#X obj 397 210 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 552 122 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 48 256;
+#X obj 552 37 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 552 65 / 100;
+#X msg 390 153 toot toot!;
+#X obj 505 35 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
 #X connect 0 0 1 0;
 #X connect 0 0 1 1;
 #X connect 2 0 1 0;
@@ -29,3 +44,9 @@
 #X connect 9 0 6 0;
 #X connect 10 0 9 0;
 #X connect 11 0 10 1;
+#X connect 12 0 16 0;
+#X connect 13 0 15 0;
+#X connect 17 0 18 0;
+#X connect 18 0 12 0;
+#X connect 19 0 13 0;
+#X connect 20 0 16 0;
