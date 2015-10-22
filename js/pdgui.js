@@ -106,22 +106,22 @@ var PdObject = function(node) {
 			case "hsl":
 				var nexuswidget = this.createNX("slider",100,12)
 				nexuswidget.on('*',function(data) {
-					patch.objects[this.index].i(0).message([data.value])
+					patch.objects[this.index].i(0).message([data.value*128])
 				}.bind(this))
 				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
 				receiver.message = function(args) {
-				    nexuswidget.set({value:args[0]},false)
+				    nexuswidget.set({value:args[0]/128},false)
 				}
 				patch.objects[this.index].o(0).connect(receiver) 
 				break;
 			case "vsl":
 				var nexuswidget = this.createNX("slider",12,100)
 				nexuswidget.on('*',function(data) {
-					patch.objects[this.index].i(0).message([data.value])
+					patch.objects[this.index].i(0).message([data.value*128])
 				}.bind(this))
 				var receiver = new Pd.core.portlets.Inlet(GUI.dummy)
 				receiver.message = function(args) {
-				    nexuswidget.set({value:args[0]},false)
+				    nexuswidget.set({value:args[0]/128},false)
 				}
 				patch.objects[this.index].o(0).connect(receiver) 
 				break;
