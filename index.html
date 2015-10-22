@@ -25,12 +25,21 @@
         
         Pd.start()
 
+        // connect db meters -- only for this environment
+        dbL.setup(Pd._glob.audio.context,Pd._glob.audio.channels[0])
+        dbR.setup(Pd._glob.audio.context,Pd._glob.audio.channels[1])
+
       })
 		})
 
 		</script>
 
-		<div id="title">A WebPD Interface</div>
+		<div id="title">
+			<span id="titletext">A WebPD Interface</span>
+			<canvas nx="meter" id="dbL"></canvas>
+			<canvas nx="meter" id="dbR"></canvas>
+		</div>
+
 		<div id="objects"></div>
 		<canvas id="connections"></canvas>
 

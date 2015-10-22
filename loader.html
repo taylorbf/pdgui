@@ -1,0 +1,84 @@
+<html>
+	<head>
+		<meta charset="utf-8"></meta>
+		<script src="js/jquery.js"></script>
+		<script src="js/jquery-ui.js"></script>
+		<script src="js/nexusUI.js"></script>
+		<script src="js/webpd-latest.js"></script>
+		<script src="js/pdgui.js"></script>
+		<link rel="stylesheet" href="css/pdgui.css"></link>
+	</head>
+	<body>
+
+		<div id="title">
+			<span id="titletext">A WebPD Interface</span>
+			<canvas nx="meter" id="dbL"></canvas>
+			<canvas nx="meter" id="dbR"></canvas>
+		</div>
+		<div id="objects"></div>
+		<canvas id="connections"></canvas>
+
+		<div id="drop_zone">Drop PD File Here</div>
+
+		<script type="text/javascript">
+
+			var patch, patchData;
+
+			function handleFileSelect(evt) {
+		    evt.stopPropagation();
+		    evt.preventDefault();
+
+		    var files = evt.dataTransfer.files; // FileList object.
+
+		    var f = files[0]; 
+
+		    if (f) {
+		      var r = new FileReader();
+		      r.onload = function(e) { 
+			      var contents = e.target.result;
+			      $("#titletext").html(f.name)
+			      console.log(contents)
+
+			      patchData = Pd.getPatchData(contents)
+
+		        patch = Pd.loadPatch(patchData)
+		        GUI.loadPatch(patchData)
+		        
+		        Pd.start()
+
+		        // connect db meters -- totally optional
+		        dbL.setup(Pd._glob.audio.context,Pd._glob.audio.channels[0])
+		        dbR.setup(Pd._glob.audio.context,Pd._glob.audio.channels[1])
+
+		      }
+		      r.readAsText(f);
+		      $("#drop_zone").hide(0)
+		    } else { 
+		      alert("Failed to load file");
+		    }
+		  }
+
+		  function handleDragOver(evt) {
+		    evt.stopPropagation();
+		    evt.preventDefault();
+		    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+		    $("#drop_zone").css("border","solid 3px #ccc")
+		  }
+		  function handleDragLeave(evt) {
+		    evt.stopPropagation();
+		    evt.preventDefault();
+		    $("#drop_zone").css("border","dashed 3px #ccc")
+		  }
+
+		  // Setup the dnd listeners.
+		  var dropZone = document.getElementById('drop_zone');
+		  dropZone.addEventListener('dragover', handleDragOver, false);
+		  dropZone.addEventListener('dragleave', handleDragLeave, false);
+		  dropZone.addEventListener('drop', handleFileSelect, false);
+
+
+
+		</script>
+
+	</body>
+</html>

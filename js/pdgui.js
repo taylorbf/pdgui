@@ -1,12 +1,8 @@
-$(function() {
-
-
-
-})
-
 nx.onload = function() {
-	nx.colorize("accent","#000")
+	nx.colorize("accent","#333")
 	nx.colorize("fill","#f7f7f7")
+	dbL.colors.fill = "#000"
+	dbR.colors.fill = "#000"
 }
 
 var GUI = {
@@ -25,7 +21,6 @@ var GUI = {
 	},
 	createConnections: function(x,y) {
 		for (var i=0;i<this.patchData.connections.length;i++) {
-			console.log(i)
 			var connection = this.patchData.connections[i]
 			var inlet1 = GUI.objects[connection.sink.id].inlets[connection.sink.port]
 			inlet1 = GUI.utils.findPosition(inlet1)
@@ -49,11 +44,6 @@ var GUI = {
 			}
 		}
 	},
-	update: function() {
-		if (GUI.changing) {
-		//	GUI.drawConnections
-		}
-	},
 	init: function() {
 
 		this.container = {
@@ -66,17 +56,10 @@ var GUI = {
 
 		this.dummy = {patch: patch}
 
-		//var testobject = new PdObject({x: 200,y: 100})
-		//var testobject2 = new PdObject({x: 250,y: 300})
-
-		//this.updateevent = document.addEventListener("mousemove",GUI.update);
-
 	}
 }
 
 var PdObject = function(node) {
-
-	//{x: node.layout.x, y: node.layout.y, text: node.proto, index: i }
 
 	this.x = node.layout.x
 	this.y = node.layout.y
@@ -89,12 +72,9 @@ var PdObject = function(node) {
 		this.house.className = "pdobject"
 		this.house.style.left = this.x+"px"
 		this.house.style.top = this.y+"px"
-		console.log(patch.objects[this.index])
 		if (patch.objects[this.index]) {
 			this.createInlets(patch.objects[this.index].inlets.length)
 			this.createOutlets(patch.objects[this.index].outlets.length)
-		} else {
-			console.log(this.index)
 		}
 		GUI.container.objects.appendChild(this.house)
 
@@ -109,6 +89,7 @@ var PdObject = function(node) {
 				    nexuswidget.set({value:args[0]},false)
 				}
 				patch.objects[this.index].o(0).connect(receiver)
+				this.house.style.borderRadius = "0px 8px 0px 0px"
 				break;
 			case "tgl":
 				var nexuswidget = this.createNX("toggle",15,15)
@@ -178,10 +159,6 @@ var PdObject = function(node) {
 				this.createText(this.text)
 				break;
 		}
-	/*	$([this.house]).draggable({
-			drag: function(e) {
-      }
-    }) */
 	}
 
 	this.createText = function(text) {
@@ -203,12 +180,6 @@ var PdObject = function(node) {
 			}
 			var inlet = document.createElement("div")
 			inlet.className = "inlet"
-
-			/*inlet.addEventListener("mousedown",function(inlet) {
-				var pos = GUI.utils.findPosition(inlet)
-				GUI.startConnection(pos.left,pos.top)
-			}.bind(this,inlet)) */
-
 			this.inlets.push(inlet)
 			inletcol.appendChild(inlet)
 			inletrow.appendChild(inletcol)
@@ -221,7 +192,6 @@ var PdObject = function(node) {
 		this.house.appendChild(inletcontainer)
 
 	}
-
 
 	this.createOutlets = function(number) {
 		this.outlets = []
@@ -257,14 +227,12 @@ var PdObject = function(node) {
 	}
 
 	this.create()
-
 }
 
 
 
 
-
-
+/* util functions */
 
 GUI.utils.findPosition = function(element) {
   var body = document.body,
@@ -285,14 +253,3 @@ GUI.utils.findPosition = function(element) {
     left: box.left + scrollLeft - clientLeft
   };
 }
-
-
-
-
-/* junk
-
-			//inlet.style.left = ((i/number)*100)*(1+(1/number))+"%"
-			//var effective = this.house.style.width
-			//inlet.style.left = ((i/number)*100)*(1+(1/number))+"px" 
-
-	*/
