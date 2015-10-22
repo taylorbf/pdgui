@@ -25,6 +25,17 @@
         
         Pd.start()
 
+        var dummyObject = {patch: patch}
+				    , receiver = new Pd.core.portlets.Inlet(dummyObject)
+
+				// Overwriting the message method which will be called when a message has been sent by outlets upstream in the patch
+				receiver.message = function(args) {
+				    console.log(args)
+				    toggle3.set({value:args[0]},false)
+				}
+
+				patch.objects[9].o(0).connect(receiver)
+
         //patch.objects[0].i(0).message([100])
 
       })

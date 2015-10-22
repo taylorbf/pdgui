@@ -8,16 +8,21 @@
 #X obj 21 36 loadbang;
 #X obj 214 22 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 195 59 * 300;
-#X obj 178 120 osc~ 200;
-#X obj 195 92 + 100;
+#X obj 195 126 * 300;
+#X obj 178 187 osc~ 200;
+#X obj 195 159 + 100;
+#X obj 193 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 209 59 metro 300;
 #X connect 0 0 1 0;
 #X connect 0 0 1 1;
 #X connect 2 0 1 0;
 #X connect 3 0 0 0;
 #X connect 4 0 2 0;
-#X connect 5 0 6 0;
+#X connect 5 0 10 0;
 #X connect 6 0 8 0;
 #X connect 7 0 1 0;
 #X connect 7 0 1 1;
 #X connect 8 0 7 0;
+#X connect 9 0 6 0;
+#X connect 10 0 9 0;
