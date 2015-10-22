@@ -26,6 +26,9 @@ canvas, input {
 	padding:7px 10px;
 	font-size:12px;
 }
+#title a {
+	float:right;margin-right:30px;color:#fff;text-decoration:none;
+}
 
 /* canvas */
 
@@ -73,6 +76,13 @@ canvas, input {
 	padding:50px;
 	position:relative;
 	z-index:10;
+}
+
+#demolink {
+	font-size:11pt
+}
+#demolink a {
+	color:#bbb;
 }
 
 
