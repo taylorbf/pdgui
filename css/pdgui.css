@@ -114,16 +114,16 @@ canvas, input {
 	float:right;
 	position:relative;
 	display:block;
-	cursor:pointer;
+	/*cursor:pointer;*/
 }
 .outlet {
 	bottom:0px;
 	top:auto;
 }
 
-.inlet:hover, .outlet:hover {
+/*.inlet:hover, .outlet:hover {
 	background-color:#1bd;
-}
+} */
 
 .inlets {display:table; width:102%; position:absolute; top:0px; left:0px;}
 .outlets {display:table; width:102%; position:absolute; bottom:0px; left:0px;}
@@ -134,4 +134,18 @@ canvas, input {
 ul {
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
+}
+
+.msg-cutout {
+	position:absolute;
+	right:-7px;
+	background-color:#fff;
+	border:solid 1px #000;
+	top:0px;
+	height:13px;
+	width:10px;
+	border-radius:4px;
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	z-index:5;
 }

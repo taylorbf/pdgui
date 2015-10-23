@@ -105,6 +105,7 @@ var PdObject = function(node) {
 				break;
 			case "hsl":
 				var nexuswidget = this.createNX("slider",100,12)
+				nexuswidget.mode = "relative"
 				nexuswidget.on('*',function(data) {
 					patch.objects[this.index].i(0).message([data.value*128])
 				}.bind(this))
@@ -116,6 +117,7 @@ var PdObject = function(node) {
 				break;
 			case "vsl":
 				var nexuswidget = this.createNX("slider",12,100)
+				nexuswidget.mode = "relative"
 				nexuswidget.on('*',function(data) {
 					patch.objects[this.index].i(0).message([data.value*128])
 				}.bind(this))
@@ -139,10 +141,15 @@ var PdObject = function(node) {
 				patch.objects[this.index].o(0).connect(receiver) 
 				break;
 			case "msg":
-				var nexuswidget = this.createNX("message",100,15)
+				var msgtext = patchData.nodes[this.index].args.join(" ")
+				var nexuswidget = this.createNX("message",msgtext.length*6.7 + 17,15)
 				nexuswidget.size = 11
-				nexuswidget.val.value = patchData.nodes[this.index].args.join(" ")
+				nexuswidget.val.value = msgtext
 				nexuswidget.draw()
+				var cutout = document.createElement("div")
+				cutout.className = "msg-cutout"
+				this.house.appendChild(cutout)
+				this.house.style.borderRight = "solid 0px"
 				nexuswidget.on('*',function(data) {
 					patch.objects[this.index].i(0).message([data.value])
 				}.bind(this))
@@ -152,6 +159,7 @@ var PdObject = function(node) {
 				patch.objects[this.index].o(0).connect(receiver) 
 				break;
 			case "text":
+				this.text = ""
 				this.createText(this.text)
 				this.house.style.backgroundColor="#fff"
 				this.house.style.border="solid 0px"
