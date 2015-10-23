@@ -1,4 +1,4 @@
-#N canvas 144 108 907 368 10;
+#N canvas 125 175 907 368 10;
 #X obj 105 125 osc~ 200;
 #X obj 99 200 dac~;
 #X obj 105 83 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -8,26 +8,25 @@
 #X obj 198 196 * 300;
 #X obj 181 257 osc~ 200;
 #X obj 198 229 + 100;
-#X obj 196 162 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 196 162 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 212 129 metro 300;
 #X obj 263 43 nbx 10 24 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 0 256;
+-262144 -1 -1 9 256;
 #X obj 557 162 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 24 1;
+-1 -1 8300 1;
 #X obj 386 289 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X text 230 335 this is a sizable test comment;
 #X obj 386 311 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 555 192 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 0.24 256;
-#X obj 555 107 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 24 256;
-#X obj 555 135 / 100;
+-262144 -1 -1 83 256;
+#X obj 555 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 83 256;
 #X msg 378 227 toot toot!;
 #X obj 508 105 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 4400 1;
 #X obj 262 94 + 20;
 #X msg 400 256 a large message to test the spacing algorithm;
 #X msg 357 199 10;
@@ -42,14 +41,13 @@
 #X connect 6 0 5 0;
 #X connect 7 0 4 0;
 #X connect 8 0 7 0;
-#X connect 9 0 19 0;
+#X connect 9 0 18 0;
 #X connect 10 0 14 0;
 #X connect 11 0 13 0;
-#X connect 15 0 16 0;
-#X connect 16 0 10 0;
-#X connect 17 0 11 0;
-#X connect 18 0 10 0;
-#X connect 19 0 8 1;
+#X connect 15 0 10 0;
+#X connect 16 0 11 0;
+#X connect 17 0 10 0;
+#X connect 18 0 8 1;
+#X connect 19 0 11 0;
 #X connect 20 0 11 0;
-#X connect 21 0 11 0;
-#X connect 21 0 22 0;
+#X connect 20 0 21 0;
