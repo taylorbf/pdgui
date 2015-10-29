@@ -24,6 +24,7 @@ var GUI = {
 			GUI.objects.push(newobj)
 		}
 		this.createConnections();
+		$(".pdobject").draggable();
 	},
 	createConnections: function(x,y) {
 		for (var i=0;i<this.patchData.connections.length;i++) {

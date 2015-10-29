@@ -1,0 +1,153 @@
+body {
+	padding:0px;
+	margin:0px;
+	background-color:#fff;
+	list-style:none;
+	user-select:none !important;
+	-webkit-user-select:none !important;
+	-moz-user-select:none !important;
+	font-family:courier;
+}
+
+canvas, input {
+	border-radius:0px !important;
+	-webkit-border-radius:0px !important;
+	-moz-border-radius:0px !important;
+}
+
+/* title */
+
+#title {
+	background-color:#000;
+	font-family:courier;
+	letter-spacing:0.1em;
+	font-weight:bold;
+	color:#fff;
+	padding:7px 10px;
+	font-size:12px;
+}
+#title a {
+	float:right;margin-right:30px;color:#fff;text-decoration:none;
+}
+
+/* canvas */
+
+#objects, #connections {
+	position:absolute;
+	top:20px;
+	left:0px;
+	width:1000px;
+	height:1000px;
+}
+
+#connections {
+	z-index:1;
+	opacity:0.2;
+}
+
+#objects {
+	z-index:2;
+}
+
+#meters {
+	position:fixed;
+	bottom:0px;
+	right:0px;
+	padding:5px;
+}
+
+#dbL, #dbR {
+	position:absolute;
+	height:24px;
+	width:12px;
+	right:17px;
+	top:2px;
+}
+#dbR {
+	right:3px;
+}
+
+#drop_zone {
+	margin:100px auto;
+	border:dashed 3px #ccc;
+	color:#ccc;
+	font-size:20pt;
+	width:400px;
+	text-align:center;
+	padding:50px;
+	position:relative;
+	z-index:10;
+}
+
+#demolink {
+	font-size:11pt
+}
+#demolink a {
+	color:#bbb;
+}
+
+
+/* objects */
+
+.pdobject {
+	min-width:10px;
+	min-height:10px;
+	display:inline-block;
+	position:absolute;
+	box-sizing:border-box;
+	overflow:hidden;
+	background-color:#eee;
+	box-shadow:0px 3px 4px #ddd;
+	cursor:pointer;
+}
+
+.objecttext {
+	font-size:8pt;
+	font-family:courier;
+	padding:3px 4px;
+}
+
+.inlet, .outlet {
+	top:0px;
+	width:7px;
+	height:2px;
+	background-color:#888;
+	/* border:solid 1px black; */
+	float:right;
+	position:relative;
+	display:block;
+	/*cursor:pointer;*/
+}
+.outlet {
+	bottom:0px;
+	top:auto;
+}
+
+/*.inlet:hover, .outlet:hover {
+	background-color:#1bd;
+} */
+
+.inlets {display:table; width:102%; position:absolute; top:0px; left:0px;}
+.outlets {display:table; width:102%; position:absolute; bottom:0px; left:0px;}
+.inlets ul, .outlets ul {display:table-row; width: 100%}
+.inlets li.left, .outlets li.left {display: table-cell; text-align: left; width: 1px; white-space:nowrap;}
+.inlets li, .outlets li  {display: table-cell; text-align: right; width: auto;}
+
+ul {
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+}
+
+.msg-cutout {
+	position:absolute;
+	right:-7px;
+	background-color:#ccc;
+	border:solid 0px #000;
+	top:0px;
+	height:15px;
+	width:0px;
+	border-radius:6px;
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	z-index:5;
+}
