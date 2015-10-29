@@ -5,7 +5,7 @@
 		<script src="js/jquery-ui.js"></script>
 		<script src="js/nexusUI.js"></script>
 		<script src="js/webpd-latest.js"></script>
-		<script src="js/pdgui-alt.js"></script>
+		<script src="js/pdgui.js"></script>
 		<link rel="stylesheet" href="css/alt-skin.css"></link>
 	</head>
 	<body>
@@ -23,7 +23,7 @@
         patch = Pd.loadPatch(patchData)
         GUI.loadPatch(patchData)
         
-        Pd.start()
+        //Pd.start()
 
         // connect db meters -- only for this environment
         dbL.setup(Pd._glob.audio.context,Pd._glob.audio.channels[0])
@@ -42,6 +42,11 @@
 
 		<div id="objects"></div>
 		<canvas id="connections"></canvas>
+
+		<div id="lock">
+			<canvas nx="toggle" id="lockmode" style="width:20px;height:20px;float:left;margin-right:7px"></canvas>
+			edit
+		</div>
 
 	</body>
 </html>

@@ -1,14 +1,31 @@
+/**
+ *
+ * POTENTIAL ISSUES
+ * 	- drawing connections super slow, because calculating every connection again. need to have a way to update calculation on a single connection / group of connections -- the ones connected to the object(s) being moved. that means not creating a whole new connections array, but having each connection be identifiable and editable.
+ *  - dragging nexus widgets, need to have a translucent div screen over them to block mouse interaction on the nx widget, but that screen should not be over outlets.
+ *  - editability of text
+ *  - updating pd model when changes are made
+ *
+ */
+
+
+
+
+
 nx.onload = function() {
-/* orig b/w	
-	nx.colorize("accent","#333")
-	nx.colorize("fill","#f7f7f7")
-	dbL.colors.fill = "#000"
-	dbR.colors.fill = "#000" */
 	/* alt */
 	nx.colorize("accent","#0af")
 	nx.colorize("fill","#eee")
 	dbL.colors.fill = "#000"
-	dbR.colors.fill = "#000" 
+	dbR.colors.fill = "#000"
+
+	lockmode.on('*',function(data) {
+		if (data.value) {
+			GUI.edit();
+		} else {
+			GUI.lock();
+		}
+	})
 }
 
 var GUI = {
@@ -24,8 +41,12 @@ var GUI = {
 			GUI.objects.push(newobj)
 		}
 		this.createConnections();
+		//$(".pdobject").draggable();
+		
+		lockmode.set({value:1},true)
 	},
 	createConnections: function(x,y) {
+		this.connections = []
 		for (var i=0;i<this.patchData.connections.length;i++) {
 			var connection = this.patchData.connections[i]
 			var inlet1 = GUI.objects[connection.sink.id].inlets[connection.sink.port]
@@ -62,6 +83,29 @@ var GUI = {
 
 		this.dummy = {patch: patch}
 
+	},
+	lock: function() {
+		Pd.start();
+		$("body").css("background-color","#fff")
+		$(".pdobject").draggable("disable")
+	},
+	edit: function() {
+		Pd.stop();
+		$("body").css("background-color","#ddd")
+		$(".pdobject").draggable({
+			drag: function(e) {
+				console.log(e)
+				var id = e.target.id
+				index = id.replace("pdobj","")
+				console.log(index)
+				GUI.patchData.nodes[index].layout = {
+					x: e.clientX,
+					y: e.clientY
+				}
+				GUI.createConnections();
+			}
+		})
+		$(".pdobject").append("<div style='position:absolute;top:0px;left:0px;width:100%;height:100%;background-color:none;z-index:2;'></div>")
 	}
 }
 
@@ -78,6 +122,7 @@ var PdObject = function(node) {
 		this.house.className = "pdobject"
 		this.house.style.left = this.x+"px"
 		this.house.style.top = this.y+"px"
+		this.house.id = "pdobj"+this.index
 		if (patch.objects[this.index]) {
 			this.createInlets(patch.objects[this.index].inlets.length)
 			this.createOutlets(patch.objects[this.index].outlets.length)

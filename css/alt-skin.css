@@ -117,6 +117,7 @@ canvas, input {
 	position:relative;
 	display:block;
 	/*cursor:pointer;*/
+	z-index:5;
 }
 .outlet {
 	bottom:0px;
@@ -150,4 +151,17 @@ ul {
 	-webkit-border-radius:6px;
 	-moz-border-radius:6px;
 	z-index:5;
+}
+
+/* patching */
+
+#lock {
+	position:fixed;
+	right:0px;
+	bottom:0px;
+	padding:7px;
+	background-color:white;
+	color:#333;
+	font-size:11pt;
+	border:solid 1px #aaa;
 }
